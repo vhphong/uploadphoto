@@ -3,31 +3,29 @@
 ?>
 
 <?php
-  $msg = "";
-
   // If upload button is clicked ...
   if (isset($_POST['upload'])) {
     $filename = $_FILES["choosefile"]["name"];
     $tempname = $_FILES["choosefile"]["tmp_name"];
-    $folder = "image/".$filename;
+    $folder = "uploadedfiles/".$filename;
 
-    $dbconn = mysqli_connect("localhost", "root", "", "dbphotos");
+    $dbconn = mysqli_connect("localhost", "root", "", "dbfiles");
 
     // Get all the submitted data from the form
-    $sql = "INSERT INTO image (filename) VALUES ('$filename')";
+    $sql = "INSERT INTO upfile (filename) VALUES ('$filename')";
 
     // Execute query
     mysqli_query($dbconn, $sql);
 
-    // Now let's move the uploaded image into the folder: image
-    if (move_uploaded_file($tempname, $folder))  {
-      $msg = "Image uploaded successfully";
+    // Now let's move the uploaded file into the folder: uploadedfiles
+    if (move_uploaded_file($tempname, $folder)) {
+      echo "File uploaded successfully";
     }
-    else{
-      $msg = "Failed to upload image";
+    else {
+      die("Failed to upload file");
     }
   }
-  $result = mysqli_query($dbconn, "SELECT * FROM image");
+  $result = mysqli_query($dbconn, "SELECT * FROM upfile");
 ?>
 
 <!DOCTYPE html>
